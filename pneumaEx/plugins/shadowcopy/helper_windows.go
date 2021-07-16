@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"strings"
 	"syscall"
 	"time"
 	"unsafe"
@@ -26,7 +27,12 @@ type IVSSAsync struct {
 type Returner struct {
 	SnapshotID   string `json:"SnapshotID"`
 	DeviceObject string `json:"DeviceObject"`
+	SymLink      string `json:"SymLink"`
 	Success      bool   `json:"Success"`
+}
+
+type SymLink struct {
+	Path string `json:"Path"`
 }
 
 type ReturnerDelete struct {
@@ -420,10 +426,11 @@ func CreateShadowCopy(volumeletter string) string {
 	if err != nil {
 		return string("Failed to create a symbolic link to the shadow copy")
 	}
-
+	shadowLink := strings.Replace(shadowLink, "\\", "\\\\", 1)
 	toReturn := Returner{
 		SnapshotID:   SnapshotIDString,
 		DeviceObject: snapshotPath,
+		SymLink:      shadowLink,
 		Success:      true,
 	}
 
