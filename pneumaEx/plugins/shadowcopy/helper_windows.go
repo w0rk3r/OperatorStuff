@@ -317,7 +317,7 @@ var vssBackupComponent *IVSS
 var snapshotID ole.GUID
 var shadowLink string
 
-func CreateShadowCopy(volumeletter string) string {
+func CreateShadowCopy(volumeletter string, targetsymlink string) string {
 
 	volume := volumeletter + ":\\"
 	timeoutInSeconds := 300
@@ -418,9 +418,7 @@ func CreateShadowCopy(volumeletter string) string {
 
 	SnapshotIDString, _ := ole.StringFromIID(&properties.SnapshotID)
 	snapshotPath := uint16ArrayToString(properties.SnapshotDeviceObject)
-
-	preferencePath := volumeletter + ":"
-	shadowLink = preferencePath + "\\shadow"
+	shadowLink = volume + targetsymlink
 	os.Remove(shadowLink)
 	err = os.Symlink(snapshotPath+"\\", shadowLink)
 	if err != nil {

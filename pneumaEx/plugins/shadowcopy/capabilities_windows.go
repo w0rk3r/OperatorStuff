@@ -9,6 +9,6 @@ var (
 )
 
 func vss(args []string) ([]byte, int) {
-	message := CreateShadowCopy(args[0])
+	message := CreateShadowCopy(args[0], args[1])
 	return []byte(message), 0
 }
